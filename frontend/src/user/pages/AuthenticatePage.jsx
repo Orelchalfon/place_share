@@ -130,14 +130,18 @@
 // };
 
 // export default AuthenticatePage;
-import { useContext, useState } from 'react';
+import
+{
+  useState
+} from 'react';
 
 import Card from '@mui/material/Card';
 
+import { useNavigate } from 'react-router-dom';
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/UIElements/Button';
-import { PlaceShareContext } from '../../shared/context/PlaceShareContextProvider';
 import { useForm } from '../../shared/hooks/FormHook';
+import { usePlaceShare } from '../../shared/hooks/usePlaceShare';
 import
 {
   VALIDATOR_EMAIL,
@@ -145,13 +149,12 @@ import
   VALIDATOR_REQUIRE
 } from '../../shared/utils/validators';
 import './AuthenticatePage.css';
-import { useNavigate } from 'react-router-dom';
 
 const AuthenticatePage = () =>
 {
-  const auth = useContext(PlaceShareContext);
+  const auth = usePlaceShare();
   const [isLoginMode, setIsLoginMode] = useState(true);
-const navigateTo = useNavigate();
+  const navigateTo = useNavigate();
   const [formState, inputHandler, setFormData] = useForm(
     {
       email: {

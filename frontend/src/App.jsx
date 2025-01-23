@@ -3,17 +3,17 @@ import "./App.css";
 
 import MainNavigation from "./shared/components/Navigation/MainNavigation";
 
-import { Fragment, useContext, useEffect } from "react";
+import { Fragment,  useEffect } from "react";
 import NewPlacePage from "./place/pages/NewPlacePage";
 import UpdatePlacePage from "./place/pages/UpdatePlacePage";
 import UsersPlacesPage from "./place/pages/UsersPlacesPage";
-import { PlaceShareContext } from "./shared/context/PlaceShareContextProvider";
+import { usePlaceShare } from "./shared/hooks/usePlaceShare";
 import AuthenticatePage from "./user/pages/AuthenticatePage";
 import UsersPage from "./user/pages/UsersPage";
 function App()
 {
 
-  const { isLoggedIn } = useContext(PlaceShareContext);
+  const { isLoggedIn } = usePlaceShare();
   // useEffect(() => {
   //   const token = localStorage.getItem("token");
   //   if (!token) {

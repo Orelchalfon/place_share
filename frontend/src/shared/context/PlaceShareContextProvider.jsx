@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 
-import React, { createContext, useCallback, useState } from "react";
-import imgs from "../../assets/imgs";
+import React, { useCallback, useState } from "react";
+import PlaceShareContext from "../hooks/usePlaceShare.js";
 import Place from "../models/Place";
 import User from "../models/User";
+import imgs from "../utils/imgs.js";
 const initialPlaces = [
   new Place(
     "p1",
@@ -57,30 +58,16 @@ const initialPlaces = [
 ];
 const initialUsers = [
   new User("u1", "orel", "orelchalfon@gmail.com", "111111", imgs[0].src, 1),
-  new User("u2", "sapir", "sapir@gmail.com ", "222222", imgs[1].src, 2),
-  new User("u3", "kobi", "kobi@gmail.com ", "333333", imgs[2].src, 1),
+  new User("u3", "kobi", "kobi@gmail.com ", "333333", imgs[1].src, 1),
+  new User("u5", "amit", "amit@gmail.com ", "555555", imgs[2].src, 2),
   new User("u4", "alon", "alon@gmail.com", "444444", imgs[3].src, 2),
-  new User("u5", "amit", "amit@gmail.com ", "555555", imgs[4].src, 2),
 ];
 
 /**  NOTE
  * Initial create Context is just for helping the development process {autocomplete}
  
  */
-export const PlaceShareContext = createContext({
-  isLoggedIn: false,
-  login: () => { },
-  logout: () => { },
-  users: [],
-  places: [],
 
-  addPlace: (placeId) => { },
-  updatePlace: (place) => { },
-  deletePlace: (placeId) => { },
-
-  setPlaces: () => { },
-  setUsers: () => { },
-});
 
 
 const PlaceShareContextProvider = ({ children }) =>

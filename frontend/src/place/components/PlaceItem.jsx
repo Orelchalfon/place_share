@@ -4,16 +4,16 @@
 import React from "react";
 
 import { Button, Card, useMediaQuery } from "@mui/material";
-import { Fragment, useContext, useState } from "react";
+import { Fragment, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Map from "../../shared/components/UIElements/Map";
 import Modal from "../../shared/components/UIElements/Modal";
-import { PlaceShareContext } from "../../shared/context/PlaceShareContextProvider";
+import { usePlaceShare } from "../../shared/hooks/usePlaceShare";
 import "./PlaceItem.css";
 
 const PlaceItem = (props) =>
 {
-  const { isLoggedIn, deletePlace } = useContext(PlaceShareContext);
+  const { isLoggedIn, deletePlace } = usePlaceShare();
   const responsiveWidth = {
     width: {
       xs: 135, // theme.breakpoints.up('xs')

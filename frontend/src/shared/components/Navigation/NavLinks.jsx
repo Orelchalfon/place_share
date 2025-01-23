@@ -1,12 +1,11 @@
 
 
-import { useContext } from "react";
 import { NavLink } from "react-router-dom";
-import { PlaceShareContext } from "../../context/PlaceShareContextProvider";
+import { usePlaceShare } from "../../hooks/usePlaceShare";
 import "./NavLinks.css";
 const NavLinks = (props) =>
 {
-  const { isLoggedIn, logout } = useContext(PlaceShareContext);
+  const { isLoggedIn, logout } = usePlaceShare();
   let navLinks;
   if (!isLoggedIn) {
     navLinks = (

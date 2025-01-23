@@ -2,10 +2,8 @@
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Card, Grid, IconButton } from "@mui/material";
-import { useContext } from "react";
 import { useParams } from "react-router-dom";
 import Input from "../../shared/components/FormElements/Input";
-import { PlaceShareContext } from "../../shared/context/PlaceShareContextProvider";
 import { useForm } from "../../shared/hooks/FormHook";
 import
 {
@@ -16,13 +14,14 @@ import
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GridLoader } from "react-spinners";
+import { usePlaceShare } from "../../shared/hooks/usePlaceShare";
 import "./NewPlacePage.css";
 const UpdatePlacePage = () =>
 {
   const navTo = useNavigate()
   const { placeId } = useParams();
 
-  const { places, updatePlace } = useContext(PlaceShareContext);
+  const { places, updatePlace } = usePlaceShare();
 
   const [formIsLoading, setFormIsLoading] = useState(true);
 
@@ -70,7 +69,7 @@ const UpdatePlacePage = () =>
     e.preventDefault();
     console.table(formState.inputs);
 
-    updatePlace({placeId, ...formState.inputs});
+    updatePlace({ placeId, ...formState.inputs });
     navTo(`/${chosenPlace.creator}/places`);
 
   };

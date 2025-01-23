@@ -3,15 +3,15 @@ import PlaceItem from "./PlaceItem";
 
 import { Card } from "@mui/material";
 
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Button from "../../shared/components/UIElements/Button";
 import Modal from "../../shared/components/UIElements/Modal";
-import { PlaceShareContext } from "../../shared/context/PlaceShareContextProvider";
 import "./PlaceItemList.css";
+import { usePlaceShare } from "../../shared/hooks/usePlaceShare";
 
 const PlaceItemList = (props) =>
 {
-  const { isLoggedIn } = useContext(PlaceShareContext);
+  const { isLoggedIn } = usePlaceShare();
   const [showModal, setShowModal] = useState(false);
   const openModalHandler = () => setShowModal(true);
   const closeModalHandler = () => setShowModal(false);
