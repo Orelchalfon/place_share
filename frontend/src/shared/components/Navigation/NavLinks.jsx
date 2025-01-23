@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+
 
 import { useContext } from "react";
 import { NavLink } from "react-router-dom";
@@ -12,11 +12,11 @@ const NavLinks = (props) =>
     navLinks = (
       <ul className="nav-links">
         <li>
-          <NavLink to="/final-proj/">All Users</NavLink>
+          <NavLink to="/">All Users</NavLink>
         </li>
 
         <li>
-          <NavLink to="/final-proj/auth">Authenticate</NavLink>
+          <NavLink to="/auth">Authenticate</NavLink>
         </li>
       </ul>
     );
@@ -24,16 +24,16 @@ const NavLinks = (props) =>
     navLinks = (
       <ul className="nav-links">
         <li>
-          <NavLink to="/final-proj/">All Users</NavLink>
+          <NavLink to="/">All Users</NavLink>
         </li>
         <li>
-          <NavLink to={`/final-proj/${props.id}/places`}>My Places</NavLink>
+          <NavLink to={`/${props.id}/places`}>My Places</NavLink>
         </li>
         <li>
-          <NavLink to="/final-proj/places/new">Add Places</NavLink>
+          <NavLink to="/places/new">Add Places</NavLink>
         </li>
         <li>
-          <NavLink onClick={() => logout()} to="/final-proj/auth">
+          <NavLink onClick={() => logout()} to="/auth">
             Sign-Out
           </NavLink>
 

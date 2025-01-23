@@ -9,7 +9,8 @@ import Modal from "../../shared/components/UIElements/Modal";
 import { PlaceShareContext } from "../../shared/context/PlaceShareContextProvider";
 import "./PlaceItemList.css";
 
-const PlaceItemList = (props) => {
+const PlaceItemList = (props) =>
+{
   const { isLoggedIn } = useContext(PlaceShareContext);
   const [showModal, setShowModal] = useState(false);
   const openModalHandler = () => setShowModal(true);
@@ -27,10 +28,10 @@ const PlaceItemList = (props) => {
             footerClass="place-items__modal-actions"
             footer={
               <div>
-                <Button to="/final-proj/places/new" inverse onClick={closeModalHandler}>
+                <Button to="/places/new" inverse onClick={closeModalHandler}>
                   Close
                 </Button>
-                <Button to="/final-proj/auth">Sign-In</Button>
+                <Button to="/auth">Sign-In</Button>
               </div>
             }
           >

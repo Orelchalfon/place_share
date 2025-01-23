@@ -16,7 +16,7 @@ const UserItem = (user) =>
       transition={{ type: "spring", stiffness: 20 }}
     >
       <Card className="user-item__content">
-        <Link to={`/final-proj/${user.id}/places`}>
+        <Link to={`/${user.id}/places`}>
           <div className="user-item__img">
             <Avatar
               sx={{ width: 100, height: 100 }}

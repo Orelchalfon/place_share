@@ -71,7 +71,7 @@ const UpdatePlacePage = () =>
     console.table(formState.inputs);
 
     updatePlace({placeId, ...formState.inputs});
-    navTo(`/final-proj/${chosenPlace.creator}/places`);
+    navTo(`/${chosenPlace.creator}/places`);
 
   };
   if (formIsLoading) {

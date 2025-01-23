@@ -36,12 +36,12 @@ function App()
   if (isLoggedIn) {
     routes = (
       <Fragment>
-        <Route path="/final-proj/" element={<UsersPage />} exact />
-        <Route path="/final-proj/places/new" element={<NewPlacePage />} exact />
-        <Route path="/final-proj/:uId/places" element={<UsersPlacesPage />} exact />
-        <Route path="/final-proj/places/:placeId" element={<UpdatePlacePage />} exact />
+        <Route path="/" element={<UsersPage />} exact />
+        <Route path="/places/new" element={<NewPlacePage />} exact />
+        <Route path="/:uId/places" element={<UsersPlacesPage />} exact />
+        <Route path="/places/:placeId" element={<UpdatePlacePage />} exact />
 
-        <Route path="/final-proj/auth" element={<AuthenticatePage />} exact />
+        <Route path="/auth" element={<AuthenticatePage />} exact />
 
 
       </Fragment>
@@ -49,12 +49,12 @@ function App()
   } else {
     routes = (
       <Fragment>
-        <Route path="/final-proj/" element={<UsersPage />} exact />
-        <Route path="/final-proj/places/new" element={<NewPlacePage />} exact />
-        <Route path="/final-proj/:uId/places" element={<UsersPlacesPage />} exact />
+        <Route path="/" element={<UsersPage />} exact />
+        <Route path="/places/new" element={<NewPlacePage />} exact />
+        <Route path="/:uId/places" element={<UsersPlacesPage />} exact />
 
-        <Route path="/final-proj/places/:placeId" element={<UpdatePlacePage />} exact />
-        <Route path="/final-proj/auth" element={<AuthenticatePage />} exact />
+        <Route path="/places/:placeId" element={<UpdatePlacePage />} exact />
+        <Route path="/auth" element={<AuthenticatePage />} exact />
 
       </Fragment>
     );
@@ -68,7 +68,7 @@ function App()
         {
           <Routes>
             {routes}
-            <Route path="*" element={<Navigate to="/final-proj/" replace />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
 
           </Routes>
         }

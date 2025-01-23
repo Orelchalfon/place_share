@@ -196,7 +196,7 @@ const navigateTo = useNavigate();
     event.preventDefault();
     console.log(formState.inputs);
     auth.login();
-    navigateTo('/final-proj/');
+    navigateTo('/');
 
   };
 

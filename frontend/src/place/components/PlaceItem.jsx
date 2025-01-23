@@ -135,7 +135,7 @@ const PlaceItem = (props) =>
                   variant={isHover.editModalBtn ? "contained" : "outlined"}
                   onMouseOver={() => setHover("editModalBtn")}
                   onMouseLeave={() => setLeave("editModalBtn")}
-                  onClick={() => navTo(`/final-proj/places/${props.id}`)}
+                  onClick={() => navTo(`/places/${props.id}`)}
                 >
                   Edit
                 </Button>
