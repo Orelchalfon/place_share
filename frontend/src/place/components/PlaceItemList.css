@@ -1,0 +1,31 @@
+.place-list {
+  min-width: 90%;
+  margin: 0 auto;
+  padding: 0rem;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+
+  list-style: none;
+}
+.place-items__modal-header {
+  text-align: center;
+}
+.place-items__modal-content {
+  padding: 1.5em;
+}
+.place-items__modal-content h2 {
+  text-align: center;
+  color: black;
+}
+.place-items__modal-actions div {
+  width: 100%;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0.25rem;
+}

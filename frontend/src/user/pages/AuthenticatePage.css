@@ -1,0 +1,28 @@
+.authentication {
+  position: absolute;
+  width: min(20rem, 50%);
+  height: fit-content;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+
+  text-align: center;
+  padding: 1rem;
+}
+.authentication form > * {
+  margin-block: 0.75rem;
+}
+.authentication form>:not(.authentication-button){
+    text-align: left;
+    
+}
+.authentication-button{
+overflow: hidden;
+
+}
+.authentication-button:is(:not(:is(:hover)),:hover){
+width: 150px;
+
+    border-radius: 10px;
+
+}
