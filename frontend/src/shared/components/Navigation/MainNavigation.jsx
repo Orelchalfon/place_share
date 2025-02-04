@@ -6,19 +6,24 @@ import NavLinks from "./NavLinks";
 import SideDrawer from "./SideDrawer";
 import BackDrop from "../UIElements/BackDrop";
 import { useEffect } from "react";
-const MainNavigation = () => {
+const MainNavigation = () =>
+{
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  useEffect(() => {
-    window.addEventListener("resize", () => {
+  useEffect(() =>
+  {
+    window.addEventListener("resize", () =>
+    {
       if (window.innerWidth > 768) {
         setIsDrawerOpen(false);
       }
     });
   }, []);
-  const openDrawer = () => {
+  const openDrawer = () =>
+  {
     setIsDrawerOpen(true);
   };
-  const closeDrawer = () => {
+  const closeDrawer = () =>
+  {
     setIsDrawerOpen(false);
   };
 
@@ -26,6 +31,10 @@ const MainNavigation = () => {
     <React.Fragment>
       {isDrawerOpen && <BackDrop onClick={closeDrawer} />}
       <SideDrawer show={isDrawerOpen} onClick={closeDrawer}>
+        <button className="main-navigation__menu-btn" onClick={openDrawer}>
+          <span></span>
+          <span></span>
+        </button>
         <nav className="main-navigation__drawer-nav">
           <NavLinks />
         </nav>

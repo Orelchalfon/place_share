@@ -32,6 +32,12 @@
 .main-navigation__menu-btn:active span:last-child {
   rotate: -45deg;
 }
+:is(.side-drawer) .main-navigation__menu-btn span:first-child {
+  rotate: 45deg;
+}
+:is(.side-drawer) .main-navigation__menu-btn span:last-child {
+  rotate: -45deg;
+}
 .main-navigation__title {
   color: white;
 }
