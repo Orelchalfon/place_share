@@ -1,20 +1,22 @@
 /* eslint-disable react/prop-types */
+import { motion } from "framer-motion";
 import UserItem from "./UserItem";
 import "./UsersItemList.css";
-import { motion } from "framer-motion";
 
-const UsersItemList = ({ users, places }) => {
-  if (users.length === 0) return <div>UsersNotFound</div>;
-  const usersList = users.map((user) => {
-    const userPlaces = places.filter((place) => place.creator === user.id);
+const UsersItemList = ({ users }) =>
+{
+  if (users && users.length === 0) return <div style={{ textAlign: "center" }}>UsersNotFound</div>;
+  const usersList = users.map((user) =>
+  {
+    const userPlaces = user.places.filter((place) => place.creator === user.id);
     return (
       <UserItem
-        key={user.id}
-        id={user.id}
+        key={user._id}
+        id={user._id}
         name={user.name}
         email={user.email}
         imgUrl={user.imgUrl}
-        count={userPlaces.length}
+        count={userPlaces?.length}
       />
     );
   });

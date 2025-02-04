@@ -137,9 +137,12 @@ import
 
 import Card from '@mui/material/Card';
 
+import { Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { GridLoader } from 'react-spinners';
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/UIElements/Button';
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import { useForm } from '../../shared/hooks/FormHook';
 import { usePlaceShare } from '../../shared/hooks/usePlaceShare';
 import
@@ -148,6 +151,7 @@ import
   VALIDATOR_MINLENGTH,
   VALIDATOR_REQUIRE
 } from '../../shared/utils/validators';
+import useHttpClient from './../../shared/hooks/http-hook';
 import './AuthenticatePage.css';
 
 const AuthenticatePage = () =>
@@ -168,8 +172,10 @@ const AuthenticatePage = () =>
     },
     false
   );
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
-  const switchModeHandler = () =>
+
+  const switchModeHandler = async () =>
   {
     if (!isLoginMode) {
       setFormData(
@@ -194,57 +200,104 @@ const AuthenticatePage = () =>
     setIsLoginMode(prevMode => !prevMode);
   };
 
-  const authSubmitHandler = event =>
+  const authSubmitHandler = async (event) =>
   {
+
     event.preventDefault();
-    console.log(formState.inputs);
-    auth.login();
-    navigateTo('/');
+
+    if (isLoginMode) {
+      try {
+        await sendRequest(
+          'http://localhost:5000/api/users/login',
+          'POST',
+          JSON.stringify({
+            email: formState.inputs.email.value,
+            password: formState.inputs.password.value
+          }),
+          {
+            'Content-Type': 'application/json'
+          }
+        );
+        auth.login();
+        navigateTo('/');
+      }
+      catch (err) {
+        console.log(err);
+      }
+
+    }
+    else {
+      try {
+        await sendRequest(
+          'http://localhost:5000/api/users/signup',
+          'POST',
+          JSON.stringify({
+            name: formState.inputs.name.value,
+            email: formState.inputs.email.value,
+            password: formState.inputs.password.value
+          }),
+          {
+            'Content-Type': 'application/json'
+          }
+        );
+        auth.login();
+        navigateTo('/');
+      }
+      catch (err) {
+        console.log(err);
+      }
+    }
 
   };
-
+  if (isLoading)
+    return <div className="center">
+      <GridLoader color="#f50057" loading={isLoading} size={50} />
+    </div>;
   return (
-    <Card className="authentication">
-      <h2>Login Required</h2>
-      <hr />
-      <form onSubmit={authSubmitHandler}>
-        {!isLoginMode && (
+    <Fragment>
+      <ErrorModal error={error} onClear={clearError} />
+      <Card className="authentication">
+        <h2>Login Required</h2>
+        <hr />
+        <form onSubmit={authSubmitHandler}>
+          {!isLoginMode && (
+            <Input
+              element="input"
+              id="name"
+              type="text"
+              label="Your Name"
+              validators={[VALIDATOR_REQUIRE()]}
+              errorText="Please enter a name."
+              onInput={inputHandler}
+            />
+          )}
           <Input
             element="input"
-            id="name"
-            type="text"
-            label="Your Name"
-            validators={[VALIDATOR_REQUIRE()]}
-            errorText="Please enter a name."
+            id="email"
+            type="email"
+            label="E-Mail"
+            validators={[VALIDATOR_EMAIL()]}
+            errorText="Please enter a valid email address."
             onInput={inputHandler}
           />
-        )}
-        <Input
-          element="input"
-          id="email"
-          type="email"
-          label="E-Mail"
-          validators={[VALIDATOR_EMAIL()]}
-          errorText="Please enter a valid email address."
-          onInput={inputHandler}
-        />
-        <Input
-          element="input"
-          id="password"
-          type="password"
-          label="Password"
-          validators={[VALIDATOR_MINLENGTH(8)]}
-          errorText="Password must contains:at least 8 characters,1 Capital,1 lower and 1 symbol."
-          onInput={inputHandler}
-        />
-        <Button type="submit" disabled={!formState.formIsValid}>
-          {isLoginMode ? 'LOGIN' : 'SIGNUP'}
+          <Input
+            element="input"
+            id="password"
+            type="password"
+            label="Password"
+            validators={[VALIDATOR_MINLENGTH(8)]}
+            errorText="Password must contains:at least 8 characters,1 Capital,1 lower and 1 symbol."
+            onInput={inputHandler}
+          />
+          <Button type="submit" disabled={!formState.formIsValid}>
+            {isLoginMode ? 'LOGIN' : 'SIGNUP'}
+          </Button>
+        </form>
+        <Button inverse onClick={switchModeHandler}>
+          SWITCH TO {isLoginMode ? 'SIGNUP' : 'LOGIN'}
         </Button>
-      </form>
-      <Button inverse onClick={switchModeHandler}>
-        SWITCH TO {isLoginMode ? 'SIGNUP' : 'LOGIN'}
-      </Button>
-    </Card>
+      </Card>
+    </Fragment>
   );
 };
 

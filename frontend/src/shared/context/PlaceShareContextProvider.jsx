@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import PlaceShareContext from "../hooks/usePlaceShare.js";
 import Place from "../models/Place";
 import User from "../models/User";
@@ -56,12 +56,6 @@ const initialPlaces = [
     "u2"
   ),
 ];
-const initialUsers = [
-  new User("u1", "orel", "orelchalfon@gmail.com", "111111", imgs[0].src, 1),
-  new User("u3", "kobi", "kobi@gmail.com ", "333333", imgs[1].src, 1),
-  new User("u5", "amit", "amit@gmail.com ", "555555", imgs[2].src, 2),
-  new User("u4", "alon", "alon@gmail.com", "444444", imgs[3].src, 2),
-];
 
 /**  NOTE
  * Initial create Context is just for helping the development process {autocomplete}
@@ -74,8 +68,8 @@ const PlaceShareContextProvider = ({ children }) =>
 {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const [users, setUsers] = useState(initialUsers);
-  const [places, setPlaces] = useState(initialPlaces);
+  const [users, setUsers] = useState([]);
+  const [places, setPlaces] = useState([]);
 
   const login = useCallback(() =>
   {
