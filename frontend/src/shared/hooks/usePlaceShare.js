@@ -6,9 +6,9 @@ const PlaceShareContext = createContext({
   users: [],
   places: [],
 
-  addPlace: (placeId) => { },
-  updatePlace: (place) => { },
-  deletePlace: (placeId) => { },
+  addPlace: () => { },
+  updatePlace: () => { },
+  deletePlace: () => { },
 
   setPlaces: () => { },
   setUsers: () => { },
