@@ -3,9 +3,9 @@
 import { NavLink } from "react-router-dom";
 import { usePlaceShare } from "../../hooks/usePlaceShare";
 import "./NavLinks.css";
-const NavLinks = (props) =>
+const NavLinks = () =>
 {
-  const { isLoggedIn, logout } = usePlaceShare();
+  const { isLoggedIn, logout, userId } = usePlaceShare();
   let navLinks;
   if (!isLoggedIn) {
     navLinks = (
@@ -26,7 +26,7 @@ const NavLinks = (props) =>
           <NavLink to="/">All Users</NavLink>
         </li>
         <li>
-          <NavLink to={`/${props.id}/places`}>My Places</NavLink>
+          <NavLink to={`/${userId}/places`}>My Places</NavLink>
         </li>
         <li>
           <NavLink to="/places/new">Add Places</NavLink>
