@@ -89,7 +89,7 @@
   height: 30rem;
 }
 
-@media (min-width: 768px) {
+@media screen and (min-width: 768px) {
   .place-item__image {
     height: clamp(14rem, 40vh, 20rem);
   }

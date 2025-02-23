@@ -3,22 +3,34 @@ import PlaceItem from "./PlaceItem";
 
 import { Card } from "@mui/material";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../shared/components/UIElements/Button";
 import Modal from "../../shared/components/UIElements/Modal";
-import "./PlaceItemList.css";
 import { usePlaceShare } from "../../shared/hooks/usePlaceShare";
+import "./PlaceItemList.css";
 
 const PlaceItemList = (props) =>
 {
-  const { isLoggedIn } = usePlaceShare();
+  const navigaTo = useNavigate();
+  const { isLoggedIn, userId } = usePlaceShare();
+  const { uId } = useParams();
   const [showModal, setShowModal] = useState(false);
-  const openModalHandler = () => setShowModal(true);
+  const openModalHandler = () =>
+  {
+    if (!isLoggedIn) {
+      setShowModal(true);
+    }
+    else {
+      navigaTo("/places/new");
+    }
+  }
   const closeModalHandler = () => setShowModal(false);
+
   if (props.items.length === 0) {
     return (
-      <div className="place-list center">
-        <>
+      <div className="center">
+        <Fragment>
           <Modal
             show={showModal}
             onCancel={closeModalHandler}
@@ -37,15 +49,21 @@ const PlaceItemList = (props) =>
           >
             <h2>You need to sign in to share a place.</h2>
           </Modal>
-          <Card sx={{ padding: ".75rem" }}>
-            <h2>No places found. Maybe create one?</h2>
-            {isLoggedIn && <Button to="/place/new">Share Place</Button>}
-            {!isLoggedIn && (
-              <Button onClick={openModalHandler}>Share Place</Button>
-            )}
+          <Card sx={{ padding: ".75rem", width: `clamp('250px', "70vw", '500px')` }}>
+
+            <h2>
+              No places found🥲.
+            </h2>
+            <h3>
+              {uId !== userId && isLoggedIn && "Notify the user ?"}
+            </h3>
+
+            {
+              uId === userId && isLoggedIn && <Button onClick={openModalHandler} style={{ alignSelf: "flex-end" }}>Share Place</Button>
+            }
           </Card>
-        </>
-      </div>
+        </Fragment>
+      </div >
     );
   }
   return (
@@ -54,12 +72,15 @@ const PlaceItemList = (props) =>
         <PlaceItem
           key={place.id}
           id={place.id}
-          image={place.imageUrl}
+          image={place.image}
           title={place.title}
           description={place.description}
           address={place.address}
+
           creatorId={place.creator}
           coordinates={place.location}
+          onDelete={props.onDeletePlace}
+
         />
       ))}
     </ul>

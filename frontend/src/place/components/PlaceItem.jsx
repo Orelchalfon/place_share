@@ -6,14 +6,19 @@ import React from "react";
 import { Button, Card, useMediaQuery } from "@mui/material";
 import { Fragment, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { GridLoader } from "react-spinners";
+import ErrorModal from "../../shared/components/UIElements/ErrorModal";
 import Map from "../../shared/components/UIElements/Map";
 import Modal from "../../shared/components/UIElements/Modal";
+import useHttpClient from "../../shared/hooks/http-hook";
 import { usePlaceShare } from "../../shared/hooks/usePlaceShare";
 import "./PlaceItem.css";
 
 const PlaceItem = (props) =>
 {
-  const { isLoggedIn, deletePlace } = usePlaceShare();
+  const { isLoggedIn, userId, token } = usePlaceShare();
+  const { isLoading, sendRequest, error, clearError } = useHttpClient();
+
   const responsiveWidth = {
     width: {
       xs: 135, // theme.breakpoints.up('xs')
@@ -52,12 +57,34 @@ const PlaceItem = (props) =>
     setIsHover((prevHover) => ({ ...prevHover, [name]: false }));
   };
 
+  const confirmDeleteHandler = async () =>
+  {
+    console.log("DELETING...");
+    setClicked(false);
+    try {
+      const responseData = await sendRequest(
+        `${import.meta.env.VITE_BACKEND_URL}/places/${props.id}`,
+        "DELETE"
+        , null
+        , {
+          Authorization: "Bearer " + token,
+        }
+      );
+      props.onDelete(props.id);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  if (isLoading) return <div className="loading-spinner__overlay">
+    <GridLoader color="#f50057" loading={isLoading} size={50} />
+  </div>
   return (
-    <>
+    <Fragment>
+      <ErrorModal error={error} onClear={clearError} />
       <Modal
         show={showModal}
         onCancel={closeMapHandler}
-        onClose={closeMapHandler}
         header={props.address}
         contentClass="place-item-map__modal-content"
         footerClass="place-item-map__modal-actions"
@@ -73,7 +100,7 @@ const PlaceItem = (props) =>
       </Modal>
       <Modal
         show={clicked}
-        onClose={() => setClicked(false)}
+        onCancel={() => setClicked(false)}
         header="Are you sure?"
         contentClass="place-item-deletion__modal-content"
         footerClass="place-item-deletion__modal-actions"
@@ -84,11 +111,7 @@ const PlaceItem = (props) =>
               variant={isHover.deletePlaceBtn ? "outlined" : "contained"}
               onMouseOver={() => setHover("deletePlaceBtn")}
               onMouseLeave={() => setLeave("deletePlaceBtn")}
-              onClick={() =>
-              {
-                deletePlace(props.id);
-                setClicked(false);
-              }}
+              onClick={confirmDeleteHandler}
             >
               DELETE
             </Button>
@@ -110,7 +133,7 @@ const PlaceItem = (props) =>
       <li className="place-item">
         <Card className="place-item__content">
           <div className="place-item__image">
-            <img src={props.image} alt={props.title} />
+            <img src={`${import.meta.env.VITE_ASSETS_URL}/${props.image}`} alt={props.title} />
           </div>
           <div className="place-item__info">
             <h2>{props.title}</h2>
@@ -128,7 +151,7 @@ const PlaceItem = (props) =>
             >
               View on Map
             </Button>
-            {isLoggedIn && (
+            {isLoggedIn && userId === props.creatorId && (
               <Fragment>
                 <Button
                   color="primary"
@@ -144,7 +167,7 @@ const PlaceItem = (props) =>
                   variant={isHover.deleteModalBtn ? "contained" : "outlined"}
                   onMouseOver={() => setHover("deleteModalBtn")}
                   onMouseLeave={() => setLeave("deleteModalBtn")}
-                  onClick={() => setClicked((prevClick) => !prevClick)}
+                  onClick={() => setClicked(true)}
                 >
                   Delete
                 </Button>
@@ -153,7 +176,7 @@ const PlaceItem = (props) =>
           </div>
         </Card>
       </li>
-    </>
+    </Fragment>
   );
 };
 
