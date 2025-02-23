@@ -1,11 +1,21 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap");
 
 * {
   box-sizing: border-box;
 }
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #4d4d4d;
+  border-radius: 0.25rem;
+}
+::-webkit-scrollbar-track {
 
+  background:rgba(255, 255, 255, 1);
+}
 html {
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-size: 16px;
 }
 
@@ -14,17 +24,16 @@ body {
   background: #4d4d4d;
   color: #fff;
 }
-ul{
+ul {
   list-style: none;
   text-decoration: none;
   display: flex;
   justify-content: space-between;
-  gap:1rem;
+  gap: 1rem;
 }
-p{
+p {
   margin: 0;
   padding: 0;
-  
 }
 .slide-in-left-enter {
   transform: translateX(-100%);
@@ -49,6 +58,18 @@ p{
 
 .center {
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loading-spinner__overlay {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  backdrop-filter: blur(2rem);
+  background-color: rgba(255, 255, 255, 0.63);
   display: flex;
   justify-content: center;
   align-items: center;
