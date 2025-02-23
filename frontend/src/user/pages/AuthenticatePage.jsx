@@ -213,9 +213,9 @@ const AuthenticatePage = () =>
 
     if (isLoginMode) {
       try {
-        console.log(`${import.meta.env.production.VITE_BACKEND_URL}/users/login`);
+        console.log(`${import.meta.env.VITE_BACKEND_URL}/users/login`);
         const responseData = await sendRequest(
-          `${import.meta.env.production.VITE_BACKEND_URL}/users/login`,
+          `${import.meta.env.VITE_BACKEND_URL}/users/login`,
           'POST',
           JSON.stringify({
             email: formState.inputs.email.value,
