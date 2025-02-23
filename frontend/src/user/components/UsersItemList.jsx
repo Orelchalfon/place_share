@@ -9,7 +9,7 @@ import "./UsersItemList.css";
 const UsersItemList = ({ users }) =>
 {
   const { isLoggedIn } = usePlaceShare();
-  if (users.length === 0 && isLoggedIn) return (
+  if (!isLoggedIn&&users.length === 0) return (
     <Card sx={{
       width: "clamp(250px, 70vw, 400px)",
       padding: ".75rem",
