@@ -1,24 +1,22 @@
 import { Paper } from "@mui/material";
 
 import { motion } from "framer-motion";
-import { Suspense, useEffect, useState } from "react";
-import { GridLoader } from "react-spinners";
+import { useEffect, useState } from "react";
+import LoadingGridLayer from "../../shared/components/UIElements/LoadingGrid";
 import useHttpClient from "../../shared/hooks/http-hook";
-import { usePlaceShare } from "../../shared/hooks/usePlaceShare";
 import UsersItemList from "../components/UsersItemList";
 
 export default function UsersPage()
 {
   const { isLoading, sendRequest } = useHttpClient();
-  const { places } = usePlaceShare()
-  const [loadedUsers, setLoadedUsers] = useState();
+  const [loadedUsers, setLoadedUsers] = useState([]);
   useEffect(() =>
   {
     const fetchUsers = async () =>
     {
       try {
         const responseData = await sendRequest(
-          'http://localhost:5000/api/users'
+          `${import.meta.env.VITE_BACKEND_URL}/users`
         );
         setLoadedUsers(responseData.users);
       } catch (err) {
@@ -26,6 +24,7 @@ export default function UsersPage()
       }
     };
     fetchUsers();
+
   }, [sendRequest]);
 
   return (
@@ -39,23 +38,22 @@ export default function UsersPage()
         paddingBlock: "1rem",
       }}
     >
-      <Suspense fallback={<div className="center">
-        <GridLoader color="#f50057" loading={isLoading} size={50} />
-      </div>}
+      {
+        (isLoading || !loadedUsers) && <LoadingGridLayer asOverlay />
+      }
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        exit="hidden"
+        style={{ width: "100%", height: "100%" }}
       >
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          exit="hidden"
-          style={{ width: "100%", height: "100%" }}
-        >
 
-          {
-            !isLoading && loadedUsers && <UsersItemList users={loadedUsers} />
-          }
+        {
+          !isLoading && loadedUsers && <UsersItemList users={loadedUsers} />
+        }
 
-        </motion.div>
-      </Suspense>
+      </motion.div>
+
     </Paper >
   );
 }

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import "./UserItem.css";
 const UserItem = (user) =>
 {
+  console.log(`UserItem:`, user);
   return (
     //the error message appears to be the animatedTime props
     <motion.li
@@ -20,7 +21,7 @@ const UserItem = (user) =>
           <div className="user-item__img">
             <Avatar
               sx={{ width: 100, height: 100 }}
-              src={user.imgUrl}
+              src={'http://localhost:5000/' + user.imgUrl}
               alt={user.name}
             />
           </div>

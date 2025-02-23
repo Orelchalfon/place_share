@@ -1,22 +1,46 @@
 /* eslint-disable react/prop-types */
+import { Card } from "@mui/material";
 import { motion } from "framer-motion";
+import Button from "../../shared/components/UIElements/Button";
+import { usePlaceShare } from "../../shared/hooks/usePlaceShare";
 import UserItem from "./UserItem";
 import "./UsersItemList.css";
 
 const UsersItemList = ({ users }) =>
 {
-  if (users && users.length === 0) return <div style={{ textAlign: "center" }}>UsersNotFound</div>;
+  const { isLoggedIn } = usePlaceShare();
+  if (users.length === 0 && isLoggedIn) return (
+    <Card sx={{
+      width: "clamp(250px, 70vw, 400px)",
+      padding: ".75rem",
+      margin: "0 auto",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+
+    }}>
+      <h2>
+        No users found🥲.<br />
+        Maybe create one?
+      </h2>
+
+      <Button to="/auth" style={{
+        alignSelf: "flex-end",
+      }}>Sign Up</Button>
+    </Card>
+  )
+  console.log(users);
   const usersList = users.map((user) =>
   {
-    const userPlaces = user.places.filter((place) => place.creator === user.id);
+
     return (
       <UserItem
-        key={user._id}
-        id={user._id}
+        key={user.id}
+        id={user.id}
         name={user.name}
         email={user.email}
-        imgUrl={user.imgUrl}
-        count={userPlaces?.length}
+        imgUrl={user.image}
+        count={user.places.length}
       />
     );
   });
@@ -26,7 +50,8 @@ const UsersItemList = ({ users }) =>
       variants={{
         visible: {
           transition: {
-            staggerChildren: 0.1,
+            staggerChildren: 0.15,
+            type: "spring",
           },
         },
       }}
