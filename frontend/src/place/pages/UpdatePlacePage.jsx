@@ -1,29 +1,30 @@
 /* eslint-disable no-unused-vars */
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Card, Grid, IconButton } from "@mui/material";
-import { useParams } from "react-router-dom";
-import Input from "../../shared/components/FormElements/Input";
-import { useForm } from "../../shared/hooks/FormHook";
-import
-{
-  VALIDATOR_MINLENGTH,
-  VALIDATOR_REQUIRE,
-} from "../../shared/utils/validators";
-
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Card, Grid, IconButton } from "@mui/material";
+import { Fragment, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { GridLoader } from "react-spinners";
+import Input from "../../shared/components/FormElements/Input";
+import Button from "../../shared/components/UIElements/Button";
+import ErrorModal from "../../shared/components/UIElements/ErrorModal";
+import { useForm } from "../../shared/hooks/FormHook";
+import useHttpClient from "../../shared/hooks/http-hook";
 import { usePlaceShare } from "../../shared/hooks/usePlaceShare";
+import
+  {
+    VALIDATOR_MINLENGTH,
+    VALIDATOR_REQUIRE,
+  } from "../../shared/utils/validators";
 import "./NewPlacePage.css";
 const UpdatePlacePage = () =>
 {
+  const { userId, token } = usePlaceShare();
   const navTo = useNavigate()
   const { placeId } = useParams();
 
-  const { places, updatePlace } = usePlaceShare();
-
-  const [formIsLoading, setFormIsLoading] = useState(true);
+  const { isLoading, sendRequest, error, clearError } = useHttpClient();
+  const [loadedPlace, setLoadedPlace] = useState();
 
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -39,94 +40,92 @@ const UpdatePlacePage = () =>
     false
   );
 
-  const chosenPlace = places.find((place) => place.id === placeId);
 
   useEffect(() =>
   {
-    if (chosenPlace)
-      setFormData(
-        {
-          title: {
-            value: chosenPlace.title,
-            isValid: true,
-          },
-          description: {
-            value: chosenPlace.description,
-            isValid: true,
-          },
-        },
-        true
-      );
-
-    setInterval(() =>
+    const fetchPlace = async () =>
     {
-      setFormIsLoading(false);
-    }, 300);
-  }, [setFormData, chosenPlace]);
+      try {
+        const responseData = await sendRequest(
+          `${import.meta.env.VITE_BACKEND_URL}/places/${placeId}`
+        );
+        setLoadedPlace(responseData.place);
+        setFormData(
+          {
+            title: {
+              value: responseData.place.title,
+              isValid: true,
+            },
+            description: {
+              value: responseData.place.description,
+              isValid: true,
+            },
+          },
+          true
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchPlace();
+  }, [sendRequest, placeId, setFormData]);
 
-  const submitUpdateForm = (e) =>
+  const submitUpdateForm = async (e) =>
   {
     e.preventDefault();
-    console.table(formState.inputs);
+    try {
+      await sendRequest(
+        `${import.meta.env.VITE_BACKEND_URL}/places/${placeId}`,
+        "PATCH",
+        JSON.stringify({
+          title: formState.inputs.title.value,
+          description: formState.inputs.description.value,
+        }),
+        {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        }
 
-    updatePlace({ placeId, ...formState.inputs });
-    navTo(`/${chosenPlace.creator}/places`);
 
+
+      );
+      navTo(`/${userId}/places`);
+    } catch (error) {
+      console.error(error);
+
+    }
   };
-  if (formIsLoading) {
-    return (
-      <div className="center">
-        <GridLoader color="#d64a36" loading={formIsLoading} size={40} />
-      </div>
-    );
-  }
 
-  if (!chosenPlace) {
-    return (
-      <div className="center">
-        <Card sx={{ padding: ".75rem" }}>
-          <h2>{`could'nt find place`}</h2>
-        </Card>
-      </div>
-    );
-  }
+
   return (
-    <form action="" onSubmit={submitUpdateForm} className="place-form">
-      <Input
-        id="title"
-        element="input"
-        type="text"
-        label="Title"
-        validators={[VALIDATOR_REQUIRE()]}
-        onInput={inputHandler}
-        errorText="Please enter a valid title."
-        defaultValue={formState.inputs.title.value}
-        defaultValidation={formState.inputs.title.isValid}
-      />
-      <Input
-        id="description"
-        element="textarea"
-        label="Description"
-        validators={[VALIDATOR_MINLENGTH(5)]}
-        onInput={inputHandler}
-        errorText="Please enter a valid description (at least 5 characters)."
-        defaultValue={formState.inputs.description.value}
-        defaultValidation={formState.inputs.description.isValid}
-      />
-      <IconButton
-        type="submit"
-        variant="text"
-        color="primary"
-        className="updateBtn"
-        size="large"
-        disabled={!formState.formIsValid}
-        TouchRippleProps={{ style: { color: "#60ccea", opacity: 0.325 } }}
-        timeout={{ enter: 750, exit: 350 }}
-      >
-        <FontAwesomeIcon icon={faUpload} />
-      </IconButton>
-      {/* <Button disabled={!formState.formIsValid}>UPDATE PLACE</Button> */}
-    </form>
+    <Fragment>
+      <ErrorModal error={error} onClear={clearError} />
+      {!isLoading && loadedPlace && <form onSubmit={submitUpdateForm} className="place-form">
+        <Input
+          id="title"
+          element="input"
+          type="text"
+          label="Title"
+          validators={[VALIDATOR_REQUIRE()]}
+          onInput={inputHandler}
+          errorText="Please enter a valid title."
+          defaultValue={loadedPlace.title}
+          defaultValidation={true}
+        />
+        <Input
+          id="description"
+          element="textarea"
+          label="Description"
+          validators={[VALIDATOR_MINLENGTH(5)]}
+          onInput={inputHandler}
+          errorText="Please enter a valid description (at least 5 characters)."
+          defaultValue={loadedPlace.description}
+          defaultValidation={true}
+        />
+
+        <Button disabled={!formState.formIsValid}>UPDATE PLACE</Button>
+      </form>}
+    </Fragment>
   );
 };
 
