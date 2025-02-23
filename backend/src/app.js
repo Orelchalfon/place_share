@@ -26,8 +26,8 @@ app.use((req, res, next) =>
 });
 
 
-app.use('/api/places', placesRoutes);
-app.use('/api/users', usersRoutes);
+app.use(`api/places`, placesRoutes);
+app.use(`api/users`, usersRoutes);
 
 app.use((req, res, next) =>
 {
@@ -59,7 +59,7 @@ mongoose
   .connect(process.env.MONGODB_URI)
   .then(() =>
   {
-    app.listen(5000);
+    app.listen(PORT || 5000);
     console.log(`Server is running on http://localhost:${PORT}`);
   })
   .catch(err =>
