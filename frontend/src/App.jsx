@@ -3,7 +3,7 @@ import "./App.css";
 
 import MainNavigation from "./shared/components/Navigation/MainNavigation";
 
-import { Fragment,  useEffect } from "react";
+import { Fragment } from "react";
 import NewPlacePage from "./place/pages/NewPlacePage";
 import UpdatePlacePage from "./place/pages/UpdatePlacePage";
 import UsersPlacesPage from "./place/pages/UsersPlacesPage";
@@ -21,39 +21,40 @@ function App()
   //   }
   // }, [navigate]);
   //
-  useEffect(() =>
-  {
-    // Load Google Maps script dynamically
+  // useEffect(() =>
+  // {
+  //   // Load Google Maps script dynamically
 
-    const script = document.getElementById('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}&callback=initMap`;
-
-
+  //   const script = document.getElementById('script');
+  //   script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`;
 
 
-  }, []);
+
+
+  // });
   let routes;
   if (isLoggedIn) {
     routes = (
       <Fragment>
+
         <Route path="/" element={<UsersPage />} exact />
-        <Route path="/places/new" element={<NewPlacePage />} exact />
+
         <Route path="/:uId/places" element={<UsersPlacesPage />} exact />
+
+        <Route path="/places/new" element={<NewPlacePage />} exact />
+
         <Route path="/places/:placeId" element={<UpdatePlacePage />} exact />
-
-        <Route path="/auth" element={<AuthenticatePage />} exact />
-
 
       </Fragment>
     );
   } else {
     routes = (
       <Fragment>
+
         <Route path="/" element={<UsersPage />} exact />
-        <Route path="/places/new" element={<NewPlacePage />} exact />
+
         <Route path="/:uId/places" element={<UsersPlacesPage />} exact />
 
-        <Route path="/places/:placeId" element={<UpdatePlacePage />} exact />
         <Route path="/auth" element={<AuthenticatePage />} exact />
 
       </Fragment>

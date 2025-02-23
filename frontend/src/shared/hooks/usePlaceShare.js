@@ -1,17 +1,13 @@
 import { createContext, useContext } from 'react';
 const PlaceShareContext = createContext({
   isLoggedIn: false,
+  userId: null,
+  token: null,
   login: () => { },
-  logout: () => { },
-  users: [],
-  places: [],
+  logout: () => { }
 
-  addPlace: () => { },
-  updatePlace: () => { },
-  deletePlace: () => { },
 
-  setPlaces: () => { },
-  setUsers: () => { },
+
 });
 
 export const usePlaceShare = () =>
