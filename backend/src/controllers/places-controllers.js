@@ -1,6 +1,6 @@
 const { validationResult } = require('express-validator');
 const mongoose = require('mongoose');
-
+const fs = require('fs');
 const HttpError = require('../models/http-error');
 const getCoordsForAddress = require('../util/location');
 const Place = require('../models/place');
@@ -85,8 +85,7 @@ const createPlace = async (req, res, next) =>
     description,
     address,
     location: coordinates,
-    image:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Empire_State_Building_%28aerial_view%29.jpg/400px-Empire_State_Building_%28aerial_view%29.jpg',
+    image: req.file.path.replace(/src\\/g, ''),
     creator
   });
 
@@ -146,6 +145,8 @@ const updatePlace = async (req, res, next) =>
     return next(error);
   }
 
+
+
   place.title = title;
   place.description = description;
 
@@ -169,6 +170,7 @@ const deletePlace = async (req, res, next) =>
   let place;
   try {
     place = await Place.findById(placeId).populate('creator');
+    console.log(place);
   } catch (err) {
     const error = new HttpError(
       'Something went wrong, could not delete place.',
@@ -177,15 +179,16 @@ const deletePlace = async (req, res, next) =>
     return next(error);
   }
 
-  if (!place) {
-    const error = new HttpError('Could not find place for this id.', 404);
+
+  if (place.creator.id !== req.userData.userId) {
+    const error = new HttpError('You are not allowed to delete this place.', 401);
     return next(error);
   }
-
+  const placePath = place.image;
   try {
     const sess = await mongoose.startSession();
     sess.startTransaction();
-    await place.remove({ session: sess });
+    await place.deleteOne({ session: sess });
     place.creator.places.pull(place);
     await place.creator.save({ session: sess });
     await sess.commitTransaction();
@@ -196,9 +199,13 @@ const deletePlace = async (req, res, next) =>
     );
     return next(error);
   }
-
+  fs.unlink('src/' + placePath, err =>
+  {
+    console.log(err);
+  });
   res.status(200).json({ message: 'Deleted place.' });
 };
+
 
 exports.getPlaceById = getPlaceById;
 exports.getPlacesByUserId = getPlacesByUserId;

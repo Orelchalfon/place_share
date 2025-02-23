@@ -2,7 +2,7 @@ const { validationResult } = require('express-validator');
 const { hashSync, compareSync } = require('bcryptjs');
 const HttpError = require('../models/http-error');
 const User = require('../models/user');
-
+const jwt = require('jsonwebtoken');
 const getUsers = async (req, res, next) =>
 {
   let users;
@@ -50,7 +50,7 @@ const signup = async (req, res, next) =>
   const createdUser = new User({
     name,
     email,
-    image: 'https://live.staticflickr.com/7631/26849088292_36fc52ee90_b.jpg',
+    image: req.file?.path.replace(/src\\/g, ''),
     password: hashSync(password, 12),
     places: []
   });
@@ -63,11 +63,26 @@ const signup = async (req, res, next) =>
     );
     return next(error);
   }
+
   const userObject = createdUser.toObject({ getters: true });
 
   delete userObject.password;
+  let token;
+  try {
+    token = jwt.sign(
+      { userId: userObject.id, email: userObject.email },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: '1h' }
+    );
+  } catch (err) {
+    const error = new HttpError(
+      'Signing up failed, please try again later.',
+      500
+    );
+    return next(error);
+  }
 
-  res.status(201).json({ user: userObject }); // createdUser includes the PW
+  res.status(201).json({ userId: userObject.id, email: userObject.email, token: token }); // createdUser includes the PW
 };
 
 
@@ -113,10 +128,25 @@ const login = async (req, res, next) =>
     );
     return next(error);
   }
+  let token;
+  try {
+    token = jwt.sign(
+      { userId: existingUser.id, email: existingUser.email },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: '1h' }
+    );
+  } catch (err) {
+    const error = new HttpError(
+      'Logging in failed, please try again later.',
+      500
+    );
+    return next(error);
+  }
 
   res.json({
     userId: existingUser.id,
     email: existingUser.email,
+    token: token
   });
 };
 
