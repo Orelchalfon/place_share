@@ -136,10 +136,10 @@ import
 } from 'react';
 
 import Card from '@mui/material/Card';
-
 import { Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GridLoader } from 'react-spinners';
+import ImageUpload from '../../shared/components/FormElements/ImageUpload';
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/UIElements/Button';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
@@ -181,7 +181,8 @@ const AuthenticatePage = () =>
       setFormData(
         {
           ...formState.inputs,
-          name: undefined
+          name: undefined,
+          image: undefined
         },
         formState.inputs.email.isValid && formState.inputs.password.isValid
       );
@@ -191,6 +192,10 @@ const AuthenticatePage = () =>
           ...formState.inputs,
           name: {
             value: '',
+            isValid: false
+          },
+          image: {
+            value: null,
             isValid: false
           }
         },
@@ -207,8 +212,9 @@ const AuthenticatePage = () =>
 
     if (isLoginMode) {
       try {
-        await sendRequest(
-          'http://localhost:5000/api/users/login',
+
+        const responseData = await sendRequest(
+          `${import.meta.env.VITE_BACKEND_URL}/users/login`,
           'POST',
           JSON.stringify({
             email: formState.inputs.email.value,
@@ -218,7 +224,9 @@ const AuthenticatePage = () =>
             'Content-Type': 'application/json'
           }
         );
-        auth.login();
+
+        const { userId, token, expiration } = responseData;
+        auth.login(userId, token, expiration);
         navigateTo('/');
       }
       catch (err) {
@@ -228,19 +236,23 @@ const AuthenticatePage = () =>
     }
     else {
       try {
-        await sendRequest(
-          'http://localhost:5000/api/users/signup',
-          'POST',
-          JSON.stringify({
-            name: formState.inputs.name.value,
-            email: formState.inputs.email.value,
-            password: formState.inputs.password.value
-          }),
-          {
-            'Content-Type': 'application/json'
-          }
-        );
-        auth.login();
+        const formData = new FormData();
+        formData.append('email', formState.inputs.email.value);
+        formData.append('name', formState.inputs.name.value);
+        formData.append('password', formState.inputs.password.value);
+        formData.append('image', formState.inputs.image.value);
+
+        const responseData =
+          await sendRequest(
+            `${import.meta.env.VITE_BACKEND_URL}/users/signup`,
+            'POST',
+            formData
+
+          );
+        const { userId, token, expiration } = responseData;
+
+        auth.login(userId, token, expiration);
+        console.log(`responseData`, responseData);
         navigateTo('/');
       }
       catch (err) {
@@ -261,16 +273,20 @@ const AuthenticatePage = () =>
         <hr />
         <form onSubmit={authSubmitHandler}>
           {!isLoginMode && (
-            <Input
-              element="input"
-              id="name"
-              type="text"
-              label="Your Name"
-              validators={[VALIDATOR_REQUIRE()]}
-              errorText="Please enter a name."
-              onInput={inputHandler}
-            />
+            <>
+              <Input
+                element="input"
+                id="name"
+                type="text"
+                label="Your Name"
+                validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH(5)]}
+                errorText="Please enter a valid name (at least 5 characters)."
+                onInput={inputHandler}
+              />
+              <ImageUpload center id="image" onInput={inputHandler} />
+            </>
           )}
+
           <Input
             element="input"
             id="email"
@@ -285,7 +301,7 @@ const AuthenticatePage = () =>
             id="password"
             type="password"
             label="Password"
-            validators={[VALIDATOR_MINLENGTH(8)]}
+            validators={[VALIDATOR_MINLENGTH(8),]}
             errorText="Password must contains:at least 8 characters,1 Capital,1 lower and 1 symbol."
             onInput={inputHandler}
           />
@@ -293,10 +309,11 @@ const AuthenticatePage = () =>
             {isLoginMode ? 'LOGIN' : 'SIGNUP'}
           </Button>
         </form>
-        <Button inverse onClick={switchModeHandler}>
+        <Button inverse="true" onClick={switchModeHandler}>
           SWITCH TO {isLoginMode ? 'SIGNUP' : 'LOGIN'}
         </Button>
       </Card>
+
     </Fragment>
   );
 };

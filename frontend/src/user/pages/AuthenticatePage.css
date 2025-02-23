@@ -1,8 +1,8 @@
 .authentication {
   position: absolute;
   width: min(20rem, 50%);
-  height: fit-content;
-  top: 50%;
+  margin-top: 5%;
+  top: 40%;
   left: 50%;
   translate: -50% -50%;
 
@@ -12,17 +12,14 @@
 .authentication form > * {
   margin-block: 0.75rem;
 }
-.authentication form>:not(.authentication-button){
-    text-align: left;
-    
+.authentication form > :not(.authentication-button) {
+  text-align: left;
 }
-.authentication-button{
-overflow: hidden;
-
+.authentication-button {
+  overflow: hidden;
 }
-.authentication-button:is(:not(:is(:hover)),:hover){
-width: 150px;
+.authentication-button:is(:not(:is(:hover)), :hover) {
+  width: 150px;
 
-    border-radius: 10px;
-
+  border-radius: 10px;
 }
