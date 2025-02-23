@@ -1,8 +1,8 @@
-/* eslint-disable react/prop-types */
+
+import PropTypes from "prop-types";
 import React from "react";
 import ReactDOM from "react-dom";
 import { CSSTransition } from "react-transition-group";
-
 import Backdrop from "./BackDrop"; // Add missing import statement for Backdrop component
 import "./Modal.css";
 
@@ -16,7 +16,8 @@ const ModalOverlay = ({
   contentClass,
   footerClass,
   footer,
-}) => {
+}) =>
+{
   const content = (
     <div className={`modal ${className}`} style={style}>
       <header className={`modal__header ${headerClass}`}>
@@ -31,7 +32,9 @@ const ModalOverlay = ({
   return ReactDOM.createPortal(content, document.getElementById("modal"));
 };
 
-const Modal = (props) => {
+
+const Modal = (props) =>
+{
   const { show, onCancel } = props;
   return (
     <React.Fragment>
@@ -49,4 +52,8 @@ const Modal = (props) => {
   );
 };
 
+Modal.propTypes = {
+  show: PropTypes.bool.isRequired,
+  onCancel: PropTypes.func.isRequired,
+};
 export default Modal;
