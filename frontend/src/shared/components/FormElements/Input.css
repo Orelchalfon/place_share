@@ -47,29 +47,42 @@
 .form-control :where(textarea, input, label) {
   display: block;
 }
-:is(.form-control) label {
+.form-control label {
   font-weight: bold;
 
   margin-bottom: 0.5rem;
   scale: 1;
   color: #000000;
-  transition: all 0.5s;
+  transition: all 0.35s;
 }
 
-/* :is(.form-control):has(.inp[value=""]:not(:is(:focus))) label {
-  font-weight: 600;
-  translate: -5px 33px;
+.form-control:has(
+    input[value=""]:not(:is(:focus-within)),
+    textarea:empty:not(:is(:focus-within))
+  )
+  label {
+  font-weight: 300;
+  letter-spacing: 0.65px;
+  translate: -0.5dvw 4.75dvh;
   scale: 0.9;
   margin-bottom: 0.5rem;
   color: #000000;
 }
-.form-control :has(textarea:checked) label {
-  font-weight: 600;
-  translate: -1rem 2.25rem;
+
+:is(.place-form)
+  .form-control:has(
+    input[value=""]:not(:is(:focus-within)),
+    textarea:empty:not(:is(:focus-within))
+  )
+  label {
+  font-weight: 300;
+  letter-spacing: 0.65px;
+  translate: -1.5dvw 4.75dvh;
   scale: 0.9;
   margin-bottom: 0.5rem;
   color: #000000;
-} */
+}
+
 .form-control :where(textarea, input) {
   width: 100%;
   font: inherit;
