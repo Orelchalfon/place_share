@@ -12,7 +12,6 @@ import AuthenticatePage from "./user/pages/AuthenticatePage";
 import UsersPage from "./user/pages/UsersPage";
 function App()
 {
-  console.log(import.meta.env)
   const { isLoggedIn } = usePlaceShare();
   // useEffect(() => {
   //   const token = localStorage.getItem("token");
