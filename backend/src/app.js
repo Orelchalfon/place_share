@@ -59,7 +59,7 @@ mongoose
   .connect(process.env.MONGODB_URI)
   .then(() =>
   {
-    app.listen(PORT || 5000);
+    app.listen(5000);
     console.log(`Server is running on http://localhost:${PORT}`);
   })
   .catch(err =>
