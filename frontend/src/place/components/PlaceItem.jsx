@@ -19,6 +19,8 @@ const PlaceItem = (props) =>
   const { isLoggedIn, userId, token } = usePlaceShare();
   const { isLoading, sendRequest, error, clearError } = useHttpClient();
 
+  console.log(`${import.meta.env.VITE_ASSETS_URL}/${props.image}`);
+
   const responsiveWidth = {
     width: {
       xs: 135, // theme.breakpoints.up('xs')
@@ -39,7 +41,6 @@ const PlaceItem = (props) =>
   const [clicked, setClicked] = useState(false);
 
   const [showModal, setShowModal] = useState(false); //
-
   const showModalHandler = () =>
   {
     setShowModal(true);
@@ -62,7 +63,7 @@ const PlaceItem = (props) =>
     console.log("DELETING...");
     setClicked(false);
     try {
-      const responseData = await sendRequest(
+      await sendRequest(
         `${import.meta.env.VITE_BACKEND_URL}/places/${props.id}`,
         "DELETE"
         , null

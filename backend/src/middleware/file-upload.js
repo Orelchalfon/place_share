@@ -13,7 +13,7 @@ const fileUpload = multer({
   storage: multer.diskStorage({
     destination: (req, file, cb) =>
     {
-      cb(null, 'src/uploads/images');
+      cb(null, path.join('src', 'uploads', 'images'));
     },
     filename: (req, file, cb) =>
     {
