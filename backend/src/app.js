@@ -14,6 +14,8 @@ const app = express();
 app.use(bodyParser.json());
 
 app.use('/uploads/images', express.static(path.join('src', 'uploads', 'images')));
+app.use(express.static(path.join(__dirname, 'dist', 'index.html')));
+
 app.use((req, res, next) =>
 {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -59,7 +61,7 @@ mongoose
   .connect(process.env.MONGODB_URI)
   .then(() =>
   {
-    app.listen(5000);
+    app.listen(PORT);
     console.log(`Server is running on http://localhost:${PORT}`);
   })
   .catch(err =>

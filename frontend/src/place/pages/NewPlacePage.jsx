@@ -12,10 +12,10 @@ import { useForm } from "../../shared/hooks/FormHook";
 import useHttpClient from "../../shared/hooks/http-hook";
 import { usePlaceShare } from "../../shared/hooks/usePlaceShare";
 import
-  {
-    VALIDATOR_MINLENGTH,
-    VALIDATOR_REQUIRE,
-  } from "../../shared/utils/validators";
+{
+  VALIDATOR_MINLENGTH,
+  VALIDATOR_REQUIRE,
+} from "../../shared/utils/validators";
 import "./NewPlacePage.css";
 
 const NewPlacePage = () =>
@@ -66,6 +66,8 @@ const NewPlacePage = () =>
         }
 
       );
+      console.log("formData", formData);
+      console.log(`formState`, formState);
       navigateTo(`/${userId}/places`);
     } catch (err) {
       console.log(err);

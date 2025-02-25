@@ -279,7 +279,7 @@ const AuthenticatePage = () =>
                 id="name"
                 type="text"
                 label="Your Name"
-                validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH(5)]}
+                validators={[VALIDATOR_REQUIRE(), VALIDATOR_MINLENGTH(2)]}
                 errorText="Please enter a valid name (at least 5 characters)."
                 onInput={inputHandler}
               />
@@ -301,7 +301,7 @@ const AuthenticatePage = () =>
             id="password"
             type="password"
             label="Password"
-            validators={[VALIDATOR_MINLENGTH(8),]}
+            validators={[VALIDATOR_MINLENGTH(8)]}
             errorText="Password must contains:at least 8 characters,1 Capital,1 lower and 1 symbol."
             onInput={inputHandler}
           />

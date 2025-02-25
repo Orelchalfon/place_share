@@ -13,6 +13,7 @@ import UsersPage from "./user/pages/UsersPage";
 function App()
 {
   const { isLoggedIn } = usePlaceShare();
+  console.log(import.meta.env.VITE_BACKEND_URL);
   // useEffect(() => {
   //   const token = localStorage.getItem("token");
   //   if (!token) {

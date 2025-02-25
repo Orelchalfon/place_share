@@ -13,7 +13,7 @@ router.post(
   [
     check('name')
       .not()
-      .isEmpty().isLength({min:5,max:8}),
+      .isEmpty().isLength({ min: 2 }),
     check('email')
       .normalizeEmail() // Test@test.com => test@test.com
       .isEmail(),

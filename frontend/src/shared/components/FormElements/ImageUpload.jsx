@@ -13,9 +13,7 @@ const ImageUpload = (props) =>
   useEffect(() =>
   {
     if (!file) {
-      if (previewUrl) {
-        setIsValid(true);
-      }
+
       return;
     }
     const fileReader = new FileReader();
