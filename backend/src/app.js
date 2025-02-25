@@ -14,7 +14,6 @@ const app = express();
 app.use(bodyParser.json());
 
 app.use('/uploads/images', express.static(path.join('src', 'uploads', 'images')));
-app.use(express.static(path.join('frontend', 'dist', 'index.html')));
 
 app.use((req, res, next) =>
 {
