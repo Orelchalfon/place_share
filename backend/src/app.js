@@ -12,8 +12,8 @@ const PORT = process.env.PORT || 8888;
 const app = express();
 
 app.use(bodyParser.json());
-console.log(path.join('uploads', 'images'));
-app.use('/uploads/images', express.static(path.join(__dirname, 'uploads', 'images')));
+
+app.use('/uploads/images', express.static(path.join('src', 'uploads', 'images')));
 
 app.use((req, res, next) =>
 {
