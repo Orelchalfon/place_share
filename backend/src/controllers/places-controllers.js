@@ -79,12 +79,15 @@ const createPlace = async (req, res, next) =>
   } catch (error) {
     return next(error);
   }
+
+  const imageUrl = req.file.path.replace(/^.*\\uploads/, 'uploads');
+  console.log(`imageUrl: ${imageUrl}`);
   const createdPlace = new Place({
     title,
     description,
     address,
     location: coordinates,
-    image: req.file?.path.replace(/src\\/g, ''),
+    image: imageUrl,
     creator
   });
 
