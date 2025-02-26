@@ -80,7 +80,9 @@ const createPlace = async (req, res, next) =>
     return next(error);
   }
 
-  const imageUrl = req.file.path.replace(/src\\/g, '');
+  const imageUrl = req.file.path.replace(/^src\\uploads/g, 'uploads');
+
+
   console.log(imageUrl)
   const createdPlace = new Place({
     title,
@@ -104,7 +106,6 @@ const createPlace = async (req, res, next) =>
     return next(error);
   }
 
-  console.log(user);
 
   try {
     const sess = await mongoose.startSession();
@@ -187,6 +188,7 @@ const deletePlace = async (req, res, next) =>
     return next(error);
   }
   const placePath = place.image;
+  console.log(place.image)
   try {
     const sess = await mongoose.startSession();
     sess.startTransaction();

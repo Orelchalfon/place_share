@@ -10,8 +10,6 @@ const usersRoutes = require('./routes/users-routes');
 const PORT = process.env.PORT || 8888;
 
 const app = express();
-console.log(path.join(__dirname, 'uploads', 'images'));
-console.log(path.join(__dirname, 'uploads', 'images').replace(/^.*\\uploads/g, 'uploads'));
 app.use(bodyParser.json());
 
 app.use('/uploads/images', express.static(path.join('src', 'uploads', 'images')));
