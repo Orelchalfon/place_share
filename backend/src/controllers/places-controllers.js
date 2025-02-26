@@ -81,6 +81,7 @@ const createPlace = async (req, res, next) =>
   }
 
   const imageUrl = req.file.path.replace(/^.*\/uploads/, 'uploads');
+  console.log(imageUrl)
   const createdPlace = new Place({
     title,
     description,
