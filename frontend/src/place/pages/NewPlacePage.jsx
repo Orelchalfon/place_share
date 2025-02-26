@@ -56,7 +56,7 @@ const NewPlacePage = () =>
       formData.append("address", formState.inputs.address.value);
       formData.append("creator", userId);
       formData.append("image", formState.inputs.image.value);
-
+      console.log(`formState.inputs.image.value`, formState.inputs.image.value);
       await sendRequest(
         `${import.meta.env.VITE_BACKEND_URL}/places`,
         "POST",

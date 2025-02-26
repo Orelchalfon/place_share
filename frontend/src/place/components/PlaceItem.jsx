@@ -18,8 +18,8 @@ const PlaceItem = (props) =>
 {
   const { isLoggedIn, userId, token } = usePlaceShare();
   const { isLoading, sendRequest, error, clearError } = useHttpClient();
+  console.log(`props.image`, props.image);
 
-  console.log(`${import.meta.env.VITE_ASSETS_URL}/${props.image}`);
 
   const responsiveWidth = {
     width: {

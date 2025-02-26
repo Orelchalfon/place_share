@@ -16,12 +16,14 @@ const ImageUpload = (props) =>
 
       return;
     }
+    console.log(`file`, file);
     const fileReader = new FileReader();
-
+    console.log(`fileReader`, fileReader);
     fileReader.onload = () => { setPreviewUrl(fileReader.result); };
-
+    
     fileReader.readAsDataURL(file);
-
+    
+    console.log(`fileReader`, fileReader);
   }, [file, previewUrl])
 
   const pickedHandler = (e) =>
