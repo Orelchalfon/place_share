@@ -50,7 +50,7 @@ const signup = async (req, res, next) =>
   const createdUser = new User({
     name,
     email,
-    image: req.file?.path.replace(/^.*\\uploads/, 'uploads'),
+    image: req.file?.path.replace(/src\\/g, ''),
     password: hashSync(password, 12),
     places: []
   });
