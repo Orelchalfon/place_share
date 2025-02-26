@@ -7,7 +7,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 const placesRoutes = require('./routes/places-routes');
 const usersRoutes = require('./routes/users-routes');
-const uploadsRoutes = require('./routes/uploads-routes');
 const PORT = process.env.PORT || 8888;
 
 const app = express();
