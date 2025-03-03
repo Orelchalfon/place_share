@@ -137,7 +137,7 @@ import
 
 import Card from '@mui/material/Card';
 import { Fragment } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { GridLoader } from 'react-spinners';
 import ImageUpload from '../../shared/components/FormElements/ImageUpload';
 import Input from '../../shared/components/FormElements/Input';
@@ -157,7 +157,8 @@ import './AuthenticatePage.css';
 const AuthenticatePage = () =>
 {
   const auth = usePlaceShare();
-  const [isLoginMode, setIsLoginMode] = useState(true);
+  const { state: userLength } = useLocation();
+  const [isLoginMode, setIsLoginMode] = useState(userLength);
   const navigateTo = useNavigate();
   const [formState, inputHandler, setFormData] = useForm(
     {

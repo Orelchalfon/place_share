@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Card } from "@mui/material";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import Button from "../../shared/components/UIElements/Button";
 import { usePlaceShare } from "../../shared/hooks/usePlaceShare";
 import UserItem from "./UserItem";
@@ -9,6 +10,7 @@ import "./UsersItemList.css";
 const UsersItemList = ({ users }) =>
 {
   const { isLoggedIn } = usePlaceShare();
+  const navigateTo = useNavigate();
 
 
   if (!isLoggedIn && users.length === 0) return (
@@ -26,7 +28,7 @@ const UsersItemList = ({ users }) =>
         Maybe create one?
       </h2>
 
-      <Button to="/auth" style={{
+      <Button  onClick={() => { navigateTo('/auth', { state: users.length }) }} style={{
         alignSelf: "flex-end",
       }}>Sign Up</Button>
     </Card>
