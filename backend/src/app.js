@@ -7,11 +7,14 @@ const dotenv = require('dotenv');
 dotenv.config();
 const placesRoutes = require('./routes/places-routes');
 const usersRoutes = require('./routes/users-routes');
+const createUploadsDir = require('./util/create-uploads-dir');
 const PORT = process.env.PORT || 8888;
 
 const app = express();
 app.use(bodyParser.json());
 
+// Create uploads directory if it doesn't exist
+createUploadsDir();
 app.use('/uploads/images', express.static(path.join('src', 'uploads', 'images')));
 
 app.use((req, res, next) =>
