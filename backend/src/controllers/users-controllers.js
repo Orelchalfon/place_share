@@ -46,7 +46,9 @@ const signup = async (req, res, next) =>
     );
     return next(error);
   }
+  console.log(`req.file`, req.file.path);
   const imageUrl = req.file.path.replace(/src\\uploads/g, 'uploads');
+
   console.log(`imageUrl`, imageUrl);
   const createdUser = new User({
     name,
