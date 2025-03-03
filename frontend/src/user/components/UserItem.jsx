@@ -21,7 +21,7 @@ const UserItem = (user) =>
           <div className="user-item__img">
             <Avatar
               sx={{ width: 100, height: 100 }}
-              src={'http://localhost:5000/' + user.imgUrl}
+              src={`${import.meta.env.VITE_BACKEND_URL} /${user.imgUrl}`}
               alt={user.name}
             />
           </div>
