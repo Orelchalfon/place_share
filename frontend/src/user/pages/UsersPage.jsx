@@ -26,16 +26,19 @@ export default function UsersPage()
     fetchUsers();
 
   }, [sendRequest]);
+  const reloadWindowPerTimeInMilliSec = (miliseconds) =>
+  {
+    setTimeout(() =>
+    {
+      window.location.reload();
+    }, miliseconds);
+  }
 
   useEffect(() =>
   {
+    if (loadedUsers.length === 0) return reloadWindowPerTimeInMilliSec(3000);
+    
 
-    if (loadedUsers.length > 50) {
-      window.location.reload();
-    }
-    if (loadedUsers.length === 0) {
-      window.location.reload();
-    }
   }, [loadedUsers])
 
   return (
