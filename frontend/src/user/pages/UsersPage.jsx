@@ -27,6 +27,17 @@ export default function UsersPage()
 
   }, [sendRequest]);
 
+  useEffect(() =>
+  {
+
+    if (loadedUsers.length > 50) {
+      window.location.reload();
+    }
+    if (loadedUsers.length === 0) {
+      window.location.reload();
+    }
+  }, [loadedUsers])
+
   return (
     <Paper
       elevation={0}

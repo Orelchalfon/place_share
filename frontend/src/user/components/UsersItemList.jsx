@@ -28,7 +28,7 @@ const UsersItemList = ({ users }) =>
         Maybe create one?
       </h2>
 
-      <Button  onClick={() => { navigateTo('/auth', { state: users.length }) }} style={{
+      <Button onClick={() => { navigateTo('/auth', { state: users.length }) }} style={{
         alignSelf: "flex-end",
       }}>Sign Up</Button>
     </Card>
