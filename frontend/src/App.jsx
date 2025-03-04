@@ -3,17 +3,17 @@ import "./App.css";
 
 import MainNavigation from "./shared/components/Navigation/MainNavigation";
 
-import { Fragment } from "react";
-import NewPlacePage from "./place/pages/NewPlacePage";
-import UpdatePlacePage from "./place/pages/UpdatePlacePage";
-import UsersPlacesPage from "./place/pages/UsersPlacesPage";
+import { Fragment, lazy } from "react";
 import { usePlaceShare } from "./shared/hooks/usePlaceShare";
-import AuthenticatePage from "./user/pages/AuthenticatePage";
 import UsersPage from "./user/pages/UsersPage";
+const AuthenticatePage = lazy(() => import("./user/pages/AuthenticatePage"));
+const UsersPlacesPage = lazy(() => import("./place/pages/UsersPlacesPage"));
+
+const NewPlacePage = lazy(() => import("./place/pages/NewPlacePage"));
+const UpdatePlacePage = lazy(() => import("./place/pages/UpdatePlacePage"));
 function App()
 {
   const { isLoggedIn } = usePlaceShare();
-  console.log(import.meta.env.VITE_BACKEND_URL);
   // useEffect(() => {
   //   const token = localStorage.getItem("token");
   //   if (!token) {
